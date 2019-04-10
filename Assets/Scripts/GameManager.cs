@@ -10,10 +10,10 @@ namespace FlappyBird
         public float scrollSpeed = -1.5f;
         public int score = 0;
 
-        public static GameManaer Instance = null;
+        public static GameManager Instance = null;
 
         public delegate void ScoreAddedCallback(int score);
-        public coreAddedCallback scoreAdded;
+        public event ScoreAddedCallback scoreAdded;
 
         // Use this for initialization
         void Awake()
@@ -22,7 +22,7 @@ namespace FlappyBird
             {
                 Instance = this;
             }
-            else
+            else {
                 Destroy(this);
             }
         }
@@ -30,7 +30,7 @@ namespace FlappyBird
         public void BirdScored()
         {
             // The bird cant score if there is a game over
-            if(gameOer)
+            if(gameOver)
             {
                 // Exit the function
                 return;
@@ -40,14 +40,14 @@ namespace FlappyBird
             score++;
 
             // If there is a function subscribed
-            if (scoreAddd != null)
+            if (scoreAdded != null)
             {
                 // Call an event to state that a score has been added
                 scoreAdded.Invoke(score);
             }
         }
 
-        public void BidDied()
+        public void BirdDied()
         {
             // Set game over to true
             gameOver = true;
