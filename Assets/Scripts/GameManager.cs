@@ -19,32 +19,23 @@ namespace FlappyBird
         void Awake()
         {
             if (Instance == null)
-            {
                 Instance = this;
-            }
-            else {
+            else
                 Destroy(this);
-            }
         }
 
         public void BirdScored()
         {
             // The bird cant score if there is a game over
             if(gameOver)
-            {
-                // Exit the function
                 return;
-            }
 
             // Increase the score
             score++;
 
-            // If there is a function subscribed
+            // Call an event to state that a score has been added
             if (scoreAdded != null)
-            {
-                // Call an event to state that a score has been added
                 scoreAdded.Invoke(score);
-            }
         }
 
         public void BirdDied()

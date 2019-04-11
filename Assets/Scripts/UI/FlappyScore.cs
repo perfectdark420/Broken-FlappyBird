@@ -14,7 +14,6 @@ namespace FlappyBird
         public int maxDigits = 5;           // The amount of digits to store offscreen for reuse
 
         private GameObject[] scoreTextPool;
-        private int[] digits;
 
         // Use this for initialization
         void Start()
@@ -25,30 +24,28 @@ namespace FlappyBird
             for (int i = 0; i < maxDigits; i++)
             {
                 // Create a new gameObject offscreen
-                GameObject clone =Instantiate(scoreTextPrefab, standbyPos, Quaternion.identity);
+                GameObject clone = Instantiate(scoreTextPrefab, standbyPos, Quaternion.identity, transform);
                 // Get the Image component attached to the clone
                 Image img = clone.GetComponent<Image>();
                 // Set sprite to corresponding number sprite
                 img.sprite = numbers[i];
-                // Attach to self
-                clone.transform.SetParent(transform);
                 // Set name of text to index
                 clone.name = i.ToString();
                 // Add it to pool
                 scoreTextPool[i] = clone;
             }
 
-            // Subscribe to GameManager's added score event
+            // Sub to score updates
             GameManager.Instance.scoreAdded += UpdateScore;
 
             // Update score to start on zero
             UpdateScore(0);
         }
         
-        void UpdateScore(int score)
+        public void UpdateScore(int score)
         {
             // Convert score into array of digits
-            int[] diits = GetDigits(score);
+            int[] digits = GetDigits(score);
             // Loop through all digits
             for (int i = 0; i < digits.Length; i++)
             {
